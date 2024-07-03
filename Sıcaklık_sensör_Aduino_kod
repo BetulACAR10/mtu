@@ -1,0 +1,41 @@
+#include <DHT.h>
+#define DHT11PIN 2
+
+int greenPin = 12; // Yeşil LED'in bağlı olduğu pin
+int redPin = 13; // Kırmızı LED'in bağlı olduğu pin
+#define thresholdTemp 33 // Sıcaklık eşiği (32 derece)
+DHT dht(DHT11PIN, DHT11); // DHT11 sensörünü tanımlayın
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();   
+  Serial.println("DHTproje"); // Başlangıç mesajı
+
+  pinMode(greenPin, OUTPUT); // Yeşil LED'i çıkış olarak ayarla
+  pinMode(redPin, OUTPUT); // Kırmızı LED'i çıkış olarak ayarla
+  pinMode(9, OUTPUT); // Fan kontrol pini olarak 9. pini ayarla
+}
+
+void loop() {
+  Serial.println("");
+  float temperature = dht.readTemperature(); // Sıcaklık değerini oku
+  float nem = dht.readHumidity(); // Nem değerini oku
+
+  Serial.print("Nem (%): ");
+  Serial.println(nem);
+
+  Serial.print("Sıcaklık (Celsius): ");
+  Serial.println(temperature);
+
+  delay(1000);
+
+  if (temperature > thresholdTemp && nem >= 30.00) {
+    digitalWrite(9, HIGH); // Fanı çalıştır
+    Serial.print("Fan çalışıyor: ");
+    digitalWrite(redPin, HIGH); // Kırmızı LED'i yak
+    digitalWrite(greenPin, LOW); // Yeşil LED'i söndür
+  } else {
+    digitalWrite(redPin, LOW); // Kırmızı LED'i söndür
+    digitalWrite(greenPin, HIGH); // Yeşil LED'i yak
+  }
+}
