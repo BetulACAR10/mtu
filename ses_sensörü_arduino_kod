@@ -1,0 +1,26 @@
+const int sesSensoruPin = 3; // Ses sensörünün bağlı olduğu pin
+const int buzzer = 8; // Buzzer'ın bağlı olduğu pin
+const int sesSeviyesiSiniri = 720; // Belirli bir ses seviyesi sınırı (örneğin 500)
+int redPin = 13; // Kırmızı LED'in bağlı olduğu pin
+
+void setup() {
+  pinMode(buzzer, OUTPUT); // Buzzer'ı çıkış olarak ayarla
+  pinMode(sesSensoruPin, INPUT); // Ses sensörünü giriş olarak ayarla
+  pinMode(redPin, OUTPUT); // Kırmızı LED'i çıkış olarak ayarla
+  Serial.begin(9600); // Seri iletişimi başlat
+}
+
+void loop() {
+  int sesSeviyesi = analogRead(sesSensoruPin); // Ses seviyesini oku
+
+  if (sesSeviyesi > sesSeviyesiSiniri) {
+    digitalWrite(buzzer, HIGH); // Buzzer'ı çalıştır
+    digitalWrite(redPin, HIGH); // Kırmızı LED'i yak
+  } else {
+    digitalWrite(buzzer, LOW); // Buzzer'ı kapat
+  }
+
+  Serial.print("Ses Seviyesi: ");
+  Serial.println(sesSeviyesi);
+  delay(100); // 100 milisaniye bekle
+}
