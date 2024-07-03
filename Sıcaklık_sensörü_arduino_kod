@@ -1,0 +1,40 @@
+int pirPin = 10; // PIR sensörünün bağlı olduğu pin
+int redPin = 13;
+int greenPin = 12;
+const int buzzer = 8;
+int hareket; // Sensörden aldığımız veri
+
+void setup() {
+  pinMode(pirPin, INPUT); // Sensör pinini giriş olarak ayarlıyoruz.
+  pinMode(buzzer, OUTPUT);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  hareket = digitalRead(pirPin); // Sensörden okuma yapıyoruz.
+
+  if (hareket == HIGH) {
+    // Hareket algılandığında içerideki komutlar uygulanır.
+    digitalWrite(buzzer, HIGH);
+    Serial.println("Hareket algılandı!");
+    digitalWrite(greenPin, LOW);
+    digitalWrite(redPin, HIGH);
+    delay(500); // 0.5 saniye bekle
+    digitalWrite(redPin, LOW);
+    delay(500); // 0.5 saniye bekle
+    digitalWrite(redPin, HIGH);
+  } else {
+    // Hareket algılanmadığında içerideki komutlar uygulanır.
+    digitalWrite(buzzer, LOW);
+    digitalWrite(redPin, LOW);
+    digitalWrite(greenPin, HIGH);
+    delay(500); // 0.5 saniye bekle
+    digitalWrite(greenPin, LOW);
+    delay(500); // 0.5 saniye bekle
+    digitalWrite(greenPin, HIGH);
+  }
+  
+  delay(2000); // 2 saniye bekle
+}
