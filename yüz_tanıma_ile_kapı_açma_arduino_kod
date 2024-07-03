@@ -1,0 +1,47 @@
+#include <Servo.h>
+
+int servoPin = 11; // Servonun bağlı olduğu pin
+int greenPin = 12;
+int redPin = 13;
+char incoming_data = '\0';
+Servo motor; // Servo motor nesnesi
+
+void setup() {
+  Serial.begin(9600);
+  motor.attach(servoPin); // Servoyu 11. pine bağla
+  motor.write(0); // Servo motoru 0 dereceye ayarla
+  pinMode(greenPin, OUTPUT);
+  pinMode(redPin, OUTPUT);
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    // Gelen veriyi oku
+    incoming_data = Serial.read();
+
+    if (incoming_data == 'a') {
+      motor.write(90); // Servo motoru 90 dereceye döndür
+      
+      digitalWrite(redPin, LOW);
+      digitalWrite(greenPin, HIGH);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, LOW);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, HIGH);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, LOW);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, HIGH);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, LOW);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, HIGH);
+      delay(500); // 500 milisaniye bekle
+      digitalWrite(greenPin, LOW);
+      delay(500); // 500 milisaniye bekle
+    } else {
+      digitalWrite(greenPin, LOW);
+      digitalWrite(redPin, HIGH);
+    }
+  }
+}
